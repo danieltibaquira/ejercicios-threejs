@@ -1,8 +1,10 @@
 import * as THREE from '/build/three.module.js';
 import {OrbitControls} from '/jsm/controls/OrbitControls.js';
+import {FirstPersonControls} from '/jsm/controls/FirstPersonControls.js';
+import {PointerLockControls} from '/jsm/controls/PointerLockControls.js';
 
 //variables a usar
-var g_camera, g_controls,
+var g_camera, g_controls, g_controls_pointer,
     g_scene, g_renderer,
     g_mars;
 
@@ -69,6 +71,8 @@ function scalePoint(point){
 //Funciones para control del luz, escena, cambios de tamaño de ventana, etc.
 // Es un boiler plate muy útil que vale la pena usar en el resto de los proyectos
 function setupScene(){
+
+
     g_scene = new THREE.Scene();
     g_scene.background = new THREE.Color(0x000000);
     var ambient = new THREE.AmbientLight(0xffffff);
@@ -89,13 +93,24 @@ function setupRenderer(){
     g_renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(g_renderer.domElement);
 
-    var controls = new OrbitControls(g_camera, g_renderer.domElement);
-    controls.update();
+    g_controls = new FirstPersonControls(g_camera, g_renderer.domElement);
+    // First Person Controls
+    g_controls.autoFoward = false;
+    // Si quiero una vista más orbital se cambia este a false
+    // Si lo activo es mejor bajar la velocidad de refresco
+    g_controls.activeLook = false;
+
+
+    // g_controls_pointer = new PointerLockControls(g_camera, g_renderer.domElement);
+    // g_controls_pointer.update();
 }
 
 function startAnimation() {
     requestAnimationFrame(startAnimation);
     g_renderer.render(g_scene, g_camera);
+    g_controls.update(1.5);
+    // g_controls_pointer.connect();
+    // g_controls_pointer.lock();
 }
 
 // Llamado a la función que calcula todo

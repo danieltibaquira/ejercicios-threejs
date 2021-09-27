@@ -1,5 +1,7 @@
 import * as THREE from '/build/three.module.js';
 import {OrbitControls} from '/jsm/controls/OrbitControls.js';
+import {PointerLockControls} from '/jsm/controls/PointerLockControls.js';
+import {FirstPersonControls} from '/jsm/controls/FirstPersonControls.js';
 import Stats from '/jsm/libs/stats.module.js';
 import { GLTFLoader } from '/jsm/loaders/GLTFLoader.js'
 
@@ -19,8 +21,19 @@ renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-var controls = new OrbitControls(camera, renderer.domElement);
-controls.update();
+// var controls = new OrbitControls(camera, renderer.domElement);
+// var controls = new PointerLockControls(camera, renderer.domElement);
+var controls = new FirstPersonControls(camera, renderer.domElement);
+
+// Orbit Controls
+// controls.update();
+
+
+// First Person Controls
+controls.autoFoward = false;
+// Si quiero una vista más orbital se cambia este a false
+// Si lo activo es mejor bajar la velocidad de refresco
+controls.activeLook = false;
 
 var abint = new THREE.AmbientLight(0xEEEEEE, 5)
 scene.add(abint);
@@ -38,6 +51,14 @@ loader.load( 'model/scene.gltf', function ( gltf ) {
 function animate(){
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
+
+    // Pointer Lock Controls
+    // controls.connect();
+    // controls.lock();
+
+    // First Person Controls
+  controls.update(1.5);
+
 }
 
 animate();
