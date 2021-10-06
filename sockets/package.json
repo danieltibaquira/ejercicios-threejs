@@ -1,0 +1,23 @@
+{
+  "name": "threejs-modelo",
+  "version": "1.0.0",
+  "description": "Proyecto de Threejs para visualizar modelo 3D para la clase HCI",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "threejs",
+    "3dModel"
+  ],
+  "author": "Daniel Tibaquira",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "johnny-five": "^2.1.0",
+    "nodemon": "^2.0.12",
+    "socket.io": "^4.2.0",
+    "three": "^0.130.1"
+  }
+}

@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
 
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Modelo 3D</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
+  <meta charset="utf-8">
+
+  <title>UV Mapping</title>
+  <meta name="viewport" content=
+  "width=device-width, initial-scale=1">
+  <style type="text/css">
+      body {
             overflow: hidden;
             margin: 0px;
         }
-    </style>
-    <script type="importmap">
-        {
+  </style>
+  <script type="importmap">
+      {
           "imports": {
             "three": "./build/three.module.js",
             "three/examples/jsm/controls/OrbitControls":"./jsm/controls/OrbitControls.js",
@@ -20,11 +22,16 @@
             "three/examples/jsm/libs/dat.gui.module":"./jsm/libs/dat.gui.module.js"
           }
         }
-    </script>
+  </script>
 </head>
 
 <body>
-    <script type="module" src="script.js"></script>
+  <!-- <script type="module" src="script.js"></script> -->
+  <script type="module" src="attempt.js">
+</script><script src="https://cdn.socket.io/4.2.0/socket.io.min.js"
+  integrity=
+  "sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj"
+  crossorigin="anonymous" type="text/javascript">
+</script>
 </body>
-
 </html>

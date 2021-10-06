@@ -2,11 +2,23 @@ import * as THREE from '/build/three.module.js';
 import {OrbitControls} from '/jsm/controls/OrbitControls.js';
 import {FirstPersonControls} from '/jsm/controls/FirstPersonControls.js';
 import {PointerLockControls} from '/jsm/controls/PointerLockControls.js';
+import {PeppersGhostEffect} from '/jsm/effects/PeppersGhostEffect.js';
+
+
+// Lectura de datos del potenciometro
+var socket = io.connect("http://localhost:3004", { forceNew: true });
+let container;
+
+
+function map_range(value, low1, high1, low2, high2) {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
+
 
 //variables a usar
 var g_camera, g_controls, g_controls_pointer,
     g_scene, g_renderer,
-    g_mars;
+    g_mars, g_pepper;
 
 // Radio de Marte en km
 var RADIUS=3390; // Km
@@ -80,25 +92,27 @@ function setupScene(){
 }
 
 function setupCamera(){
-    g_camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+    g_camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
     g_camera.position.z = 300;
 }
 
 function setupRenderer(){
-    g_renderer = new THREE.WebGLRenderer({
-        antialias: false
-    });
-
+    g_renderer = new THREE.WebGLRenderer();
+    container = document.createElement( 'div' );
+    document.body.appendChild( container );
     g_renderer.setPixelRatio(window.devicePixelRatio);
-    g_renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(g_renderer.domElement);
+    container.appendChild(g_renderer.domElement);
 
-    g_controls = new FirstPersonControls(g_camera, g_renderer.domElement);
-    // First Person Controls
-    g_controls.autoFoward = false;
-    // Si quiero una vista más orbital se cambia este a false
-    // Si lo activo es mejor bajar la velocidad de refresco
-    g_controls.activeLook = false;
+    // g_controls = new FirstPersonControls(g_camera, g_renderer.domElement);
+    // // First Person Controls
+    // g_controls.autoFoward = false;
+    // // Si quiero una vista más orbital se cambia este a false
+    // // Si lo activo es mejor bajar la velocidad de refresco
+    // g_controls.activeLook = false;
+
+    g_pepper = new PeppersGhostEffect(g_renderer);
+    g_pepper.setSize(window.innerWidth, window.innerHeight);
+    g_pepper.cameraDistance = 1;
 
 
     // g_controls_pointer = new PointerLockControls(g_camera, g_renderer.domElement);
@@ -107,8 +121,21 @@ function setupRenderer(){
 
 function startAnimation() {
     requestAnimationFrame(startAnimation);
-    g_renderer.render(g_scene, g_camera);
-    g_controls.update(1.5);
+
+    socket.on("messages", function (value, raw) {
+        console.log(value);
+        if(value >= 1023){
+            g_mars.rotation.x+=0.0005;
+            g_mars.rotation.y+=0.0005;
+        }else{
+            g_mars.rotation.y+=0.0005;
+            g_mars.rotation.x-=0.0005;
+        }
+    })
+
+    g_pepper.render(g_scene, g_camera);
+    // g_renderer.render(g_scene, g_camera);
+    // g_controls.update(1.5);
     // g_controls_pointer.connect();
     // g_controls_pointer.lock();
 }

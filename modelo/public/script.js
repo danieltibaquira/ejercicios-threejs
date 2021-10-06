@@ -57,7 +57,7 @@ function animate(){
     // controls.lock();
 
     // First Person Controls
-  controls.update(1.5);
+  controls.update(2);
 
 }
 
