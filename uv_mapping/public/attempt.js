@@ -63,7 +63,7 @@ function animate() {
 
     requestAnimationFrame( animate );
 
-    socket.on("messages", function (value, raw) {
+    socket.on("direccion", function (value, raw) {
       actual = value.value;
       // if(actual != anterior){
         console.log(actual)
@@ -76,6 +76,20 @@ function animate() {
       // }
     })
 
+    socket.on("escala", function (value, raw) {
+      actual = value.value;
+      // if(actual != anterior){
+        console.log(actual)
+        anterior = actual;
+        if(actual <= 512){
+            group.scale.y += 0.0001;
+            group.scale.x += 0.0001;
+        }else{
+            group.scale.y -= 0.0001;
+            group.scale.x -= 0.0001;
+        }
+      // }
+    })
     effect.render( scene, camera );
 
 }

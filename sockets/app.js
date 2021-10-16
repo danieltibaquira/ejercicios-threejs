@@ -20,20 +20,34 @@ app.use(express.static(__dirname + '/public'))
 // app.use('/', express.static(path.join(__dirname, 'node_modules/socket.io')));
 
 board.on("ready", () => {
-  const potentiometer = new Sensor("A3");
+  const potentiometerDireccion = new Sensor("A3");
 
-  potentiometer.on("change", () => {
-    const {value, raw} = potentiometer;
+  potentiometerDireccion.on("change", () => {
+    const {value, raw} = potentiometerDireccion;
     let actual = value;
     if(actual % 10 == 0){
       if ( actual != anterior ){
         console.log(value);
-        io.emit("messages", {value: value, raw:raw});
+        io.emit("direccion", {value: value, raw:raw});
         anterior = actual;
       }
     }
-
   });
+
+  const potentiometerEscala = new Sensor("A4");
+
+  potentiometerEscala.on("change", () => {
+    const {value, raw} = potentiometerEscala;
+    let actual = value;
+    if(actual % 10 == 0){
+      if ( actual != anterior ){
+        console.log("Escala", value);
+        io.emit("escala", {value: value, raw:raw});
+        anterior = actual;
+      }
+    }
+  });
+
 });
 
 
